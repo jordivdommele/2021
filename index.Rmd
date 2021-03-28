@@ -1,5 +1,6 @@
 
 ----
+
 title: "Computational Musicology"
 author: "Jordi van Dommele"
 date: "2/12/2021"
@@ -7,7 +8,7 @@ output:
   flexdashboard::flex_dashboard:
     storyboard: true
     theme: flatly
----
+----
 
 ```{r, eval = FALSE}
 remotes::install_github('jaburgoyne/compmus')
@@ -29,7 +30,6 @@ Sys.setenv(SPOTIFY_CLIENT_ID = 'f78108b902694ef28f04812d3847084a')
 Sys.setenv(SPOTIFY_CLIENT_SECRET = 'a4d9fd978a2d42078c67522ddacf7771')
 ```
 
-
 ### Classification & Clustering
 
 ```{r}
@@ -49,11 +49,12 @@ ggplot(data = metallica__all, aes(x = valence, y = energy, color=mode )) +
              "bold")
 ```
 
--------------------------------------
+------------------------------------------------------------------------
 
 This shows how metallicas music should interact with emotions
 
 ### Rhythmical analysis of the working from home playlists; is there correlation?
+
 ```{r}
 Metallica_Master<- get_playlist_audio_features("1126158837", "0jxWWZBdHiWEHZgmpXikyr")
 Metallica_BLack_album <- get_playlist_audio_features("1126158837", "1ozYFVIwA3JFZShCiqn606")
@@ -103,7 +104,8 @@ february_dip <-
   )
 ggplotly(february_dip)
 ```
-###  tempo 
+
+### tempo
 
 ```{r}
  Metallica_Master<- get_playlist_audio_features("1126158837", "0jxWWZBdHiWEHZgmpXikyr")
@@ -167,10 +169,8 @@ Metallica %>%
          
 ```
 
-
-
-
 ### 2020: What is the best music to be listening to, working from home?
+
 ```{r}
 MoP <-
   get_tidy_audio_analysis("2MuWTIM3b0YEAskbeeFE1i") %>% # Change URI.
@@ -270,9 +270,10 @@ ES %>%
   scale_fill_viridis_c(guide = "none") +
   theme_classic() +
   labs(x = "", y = "")
-``` 
+```
 
-### What does working from home mean for Spotify? 
+### What does working from home mean for Spotify?
+
 ```{r}
 TTN<- get_tidy_audio_analysis("2VAQuXC01B2eJAEnkjIj7z")
 TTN%>%
@@ -292,7 +293,8 @@ BTY%>%
   theme_classic()
 ```
 
-### Tempo throughout the ages 
+### Tempo throughout the ages
+
 ```{r}
 circshift <- function(v, n) {
   if (n == 0) v else c(tail(v, n), head(v, -n))
@@ -431,4 +433,4 @@ chord_templates,        # Change to chord_templates if descired
   
 ```
 
-### nog een deel 
+### nog een deel
