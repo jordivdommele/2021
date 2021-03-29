@@ -28,9 +28,10 @@ Sys.setenv(SPOTIFY_CLIENT_ID = 'f78108b902694ef28f04812d3847084a')
 Sys.setenv(SPOTIFY_CLIENT_SECRET = 'a4d9fd978a2d42078c67522ddacf7771')
 ```
 
-### Classification & Clustering
+### Corpus
 
-```{r}
+
+```{r, fig.width=6, fig.height=4}
 metallica__all<-get_playlist_audio_features("metallicaofficial","1asCHnChQHsZ3es6eUomon")
 ggplot(data = metallica__all, aes(x = valence, y = energy, color=mode )) +
   geom_jitter() +
@@ -48,18 +49,22 @@ ggplot(data = metallica__all, aes(x = valence, y = energy, color=mode )) +
 ```
 
 ------------------------------------------------------------------------
+For this corpus is wanted to see if spotify could notice de departure and arrival of a new bandmember. For this i have chosen my favourite band of all time : Metallica. On the 27th of September 1986 Metallica was touring Sweden, during the night the bus skidded off the road. CLiff Burton the bassist was thrown through the window of the bus, which fell on top of him.
 
-This shows how metallicas music should interact with emotions
+Several weeks later Jason Newsted joined, he would go on to record four studio albums with the Metallica. Newsted was a completely different bassplayer then Cliff , for example he played with a pick. Im trying to see if spotify could pick up on these kind of things and what Newsted may have brought to the band that wasnt already there.
 
-### Rhythmical analysis of the working from home playlists; is there correlation?
+This is why I will compare 2 albums: Master of Puppets and the Black album. I chose these because Master of Puppets was the last album Cliff Burton recorded before he passed away. The Black album is the first album were Jason Newsted had creative input, he had recorded ...And Justice For All with Metallica earlier but this consisted of material which was mostely written by Cliff Burton.
+In this graph we can see if there is a major part of the work which stands out from the repertoire because of a shift in valence and energy. For the most part Metallica hast stayed with a low valence and high energy, here and there there are some songs which stand out but this is to be expected from 10 studio albums.
+
+### Direct Comparison 
 
 ```{r}
 Metallica_Master<- get_playlist_audio_features("1126158837", "0jxWWZBdHiWEHZgmpXikyr")
 Metallica_BLack_album <- get_playlist_audio_features("1126158837", "1ozYFVIwA3JFZShCiqn606")
 MEtallica_average <-
   Metallica_Master %>%
-  mutate(country = "First Album") %>%
-  bind_rows(Metallica_BLack_album %>% mutate(country = "Most Popular")) %>%
+  mutate(country = "Master of Puppets") %>%
+  bind_rows(Metallica_BLack_album %>% mutate(country = "Black Album")) %>%
   mutate(
     country = fct_relevel(country,  "Master of Puppets ", " Black Album")
   )
@@ -102,11 +107,16 @@ february_dip <-
   )
 ggplotly(february_dip)
 ```
+------------------------------------------------------------------------
+The biggest difference we can see is the dancability, every song form the black album has a fairly high dancibility where as every song on Master of Puppets has a fairly low dancibility. Another difference is seen in the popularity of the tracks , although the most popular songs from both albums have the same popularity, overall the Black album has more tracks which are popular. 
 
-### tempo
+Other then that we see that Master of puppets has no songs that are >0.5 energy where the black album has several. Overall we could say that the Black album is more diverse then Master of Puppets. There is one song in Master of Puppets which stands out, which is also the least favorite. With the arrival of Jason Newsted the band has made a more diverse album, the dancability could maybe be contributed to the way the drums and the bass correlate with each other. 
 
-```{r}
- Metallica_Master<- get_playlist_audio_features("1126158837", "0jxWWZBdHiWEHZgmpXikyr")
+
+### tempo comparison
+
+```{r }
+Metallica_Master<- get_playlist_audio_features("1126158837", "0jxWWZBdHiWEHZgmpXikyr")
 Metallica_BLack_album <- get_playlist_audio_features("1126158837", "1ozYFVIwA3JFZShCiqn606")
 awards <-
   bind_rows(
@@ -134,6 +144,7 @@ Metallica <-
   Master %>%
   mutate(genre = "Master") %>%
   bind_rows(Black %>% mutate(genre = "Black"))
+
 Metallica %>%
   mutate(
     sections =
@@ -167,8 +178,12 @@ Metallica %>%
          
 ```
 
-### 2020: What is the best music to be listening to, working from home?
+Here we see the mean of the different tempos used in Master of Puppets and the Black Album. A problem with this graph is that Spotify likes to halftime tempos who have gone over a certain point. Master of puppets has an average of just above 100, but most of the songs have been halftimed so the mean should probably be pushing around 180. However in graph 2 we multiple interesting things.
 
+For example we can see that Master of Puppets is more diverse in Volume then the black album. Next to that we see that Master of puppets has longer songs on average then the Black album. This is very interesting when we take into account that the Black album has a way higher popularity and danceability then Master of Puppets. There could be a corralation between these factors. The factor of the "higher" average tempo could also have something to do with it. Altho Master of Puppets actually has the higher tempo, it could have the same effect when looking at danceability, 200 bpm seems as hard to dance to als 100 bpm. 
+
+
+### Song structures
 ```{r}
 MoP <-
   get_tidy_audio_analysis("2MuWTIM3b0YEAskbeeFE1i") %>% # Change URI.
@@ -270,9 +285,17 @@ ES %>%
   labs(x = "", y = "")
 ```
 
-### What does working from home mean for Spotify?
+Here we can see audio allignment and selfimularity matrix from 2 Songs, The first pair is Master of Puppets, the second is Enter Sandman. Both are the most popular from their album. The first huge difference we see is the magnitude in the lower regions. Master of Puppets has a presence in the C01 region but in Enter Sandman the presence is stronger. This could be because of the difference between a fingerstyle and plectrum use on the bass where the plectrum has a stronger pressence. Other then that we can see that there is a strong presence till C06 in Enter Sandman From Overtones,where Master of Puppets it seems to naturally thin out. This is most likely because Enter Sandman has been more compressed then Master of Puppets. We can also see the song structure more clear in Enter sandman , the buildup and the bridge after the solo are fairly quiet, its easy to see where the music stops or dims down. For Master of Puppets this is a bit less clear, even when only a single instrument plays there is still a lot of presence, because of the song length its also a bit harder to spot.
 
-```{r}
+For the Self Simularity Matrix it seems opposite at first, this may be because of the variations at the start of Enter sandman, which makes it kind off messy. Master of Puppets seem to have a more complicated song structure as seen by the amout of tiny segments we can identify. Enter Sandman on the other hand has bigger segments but a bit more variations. 
+
+
+
+
+
+### Recording 
+
+```{r,, figures-side, fig.show="hold", out.width="50%"}
 TTN<- get_tidy_audio_analysis("2VAQuXC01B2eJAEnkjIj7z")
 TTN%>%
   tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
@@ -281,6 +304,8 @@ TTN%>%
   scale_fill_viridis_c(guide = "none") +
   labs(x = "Time (s)", y = "Tempo (BPM)", title = "Tempogram Through the Never") +
   theme_classic()
+
+
 BTY<- get_tidy_audio_analysis("6UB9mShVLbMm0W4e6vud4C")
 BTY%>%
   tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
@@ -291,7 +316,10 @@ BTY%>%
   theme_classic()
 ```
 
-### Tempo throughout the ages
+
+In the Tempogram we see 2 Throught the Never from the Black Album and Battery from Master of Puppets. The first part of battery is all over the place due to it being an acoustic intro with no real beat. After that the tempo is actually doubletime from what it seen here. The tempo from Battery is way less consistend. This is due to the way of recording. Master of Puppets was recorded while playing together with some exceptions like the solo and vocals. The inconsistencies we see in Trough the Never are because there is a small moment of silence inbetween chorus and verses this is most likely the cause of the sudden drops off speed. 
+
+### Harmonic comparison 
 
 ```{r}
 circshift <- function(v, n) {
@@ -429,6 +457,25 @@ chord_templates,        # Change to chord_templates if descired
   
   
   
+
 ```
 
-### nog een deel
+
+Here we see Orion from Master of Puppets on the left and My friend of Mistery of the Black album on the right. We can see that most Orion touches upon way more chords then My friend of Misery does, this may have two different factors. My friend of misery is a more arpegiated song, chords are broken up into different notes and this may be the cause of the chords not being predicted right through spotify. The other explination is that Jason Newsted actually plays less diverse and relies more on playing the root of the guitar lines. Whereas Cliff was known to venture out and be good theory based musician. This may be the reason many of the songs on the Black album are also shorter and simplified. 
+
+Knowing which notes can be put in the bassline can easy change the chord that is presented, the autonome bassline that Cliff Burton played makes for a richer use of chords then it does in My friend of misery. 
+
+### conclusion 
+
+My intention was to look if spotify could see data that could show the replacement of a bandmember. I think it can in certain ways but it is not confidend. Ofcourse there were a lot of thing that could be pointed out as a sign that (in this case the bassist) was replaced with another bassist. But we cannot say this for certain.
+
+However, since Jason Newsted joined Metallica there are some patters that have changed. 
+For example: songs have become shorter, more danceable and there is a lot more bass present in the mix. 
+The band has also approaced a new way of recording and used less variaty in chords, but more variaty in song styles (as seen in emotions).
+
+I found it very interesting to take a look inside all of this, however the changes that have been made cannot be purely be put on the change of bassist in this case. Metallica may have changed up some things but this could always be percieved as an creative choice. However it is cleary timed on the first album that Jason Newsted had any creative input on.
+
+
+
+
+
